@@ -9,7 +9,7 @@ image:
 service:
   name: nginx
   externalPort: 80
-  internalPort: 5000
+  internalPort: 9000
 ingress:
   enabled: false
   # Used to create an Ingress record.
