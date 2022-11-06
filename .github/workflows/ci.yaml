@@ -20,7 +20,7 @@ jobs:
         action: "package"
       env:
         CHART_DIR: flask-chart
-        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+        ARTIFACTORY_URL: https://bin.cloud.barco.com:443/artifactory/nitin-test-repo
         ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
     
@@ -30,6 +30,6 @@ jobs:
         action: "publish"
       env:
         CHART_DIR: flask-chart
-        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+        ARTIFACTORY_URL: https://bin.cloud.barco.com:443/artifactory/nitin-test-repo
         ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
