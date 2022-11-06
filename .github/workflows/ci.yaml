@@ -19,6 +19,7 @@ jobs:
         echo "Install the plugins"
         export HELM_VERSION=${HELM_VERSION:="3.5.4"}
         export HELM_ARTIFACTORY_PLUGIN_VERSION=${HELM_ARTIFACTORY_PLUGIN_VERSION:="v1.0.2"}
+        helm plugin install https://github.com/belitre/helm-push-artifactory-plugin --version ${HELM_ARTIFACTORY_PLUGIN_VERSION}
         pip3 install yq
         echo "Get helm:${HELM_VERSION}"
         curl -L "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" | tar xvz
