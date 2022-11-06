@@ -14,15 +14,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: "Helm publish"
-      uses: mbovo/action-helm-artifactory@v1.0.0
-      with:
-        action: "package"
-      env:
-        CHART_DIR: flask-chart
-        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
-        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+    # - name: "Helm publish"
+    #   uses: mbovo/action-helm-artifactory@v1.0.0
+    #   with:
+    #     action: "package"
+    #   env:
+    #     CHART_DIR: flask-chart
+    #     ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+    #     ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+    #     ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
     
     - name: "Helm publish"
       uses: mbovo/action-helm-artifactory@v1.0.0
@@ -33,3 +33,4 @@ jobs:
         ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
         ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        
