@@ -40,14 +40,14 @@ jobs:
       env:
         CHART_DIR: flask-chart  
     
-    # - name: Push the helm chart to artifactory
-    #   run: |
-    #     echo "Push helm chart $CHART_DIR"
-    #     CHART_VERSION=$(yq -r '.version' $CHART_DIR/Chart.yaml)
-    #     helm push-artifactory ${CHART_DIR} ${ARTIFACTORY_URL} --username ${ARTIFACTORY_USERNAME} --password ${ARTIFACTORY_PASSWORD} --version "${CHART_VERSION}"
-    #   env:
-    #     CHART_DIR: flask-chart
-    #     ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
-    #     ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-    #     ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+    - name: Push the helm chart to artifactory
+      run: |
+        echo "Push helm chart $CHART_DIR"
+        CHART_VERSION=$(yq -r '.version' $CHART_DIR/Chart.yaml)
+        helm push-artifactory ${CHART_DIR} ${ARTIFACTORY_URL} --username ${ARTIFACTORY_USERNAME} --password ${ARTIFACTORY_PASSWORD} --version "${CHART_VERSION}"
+      env:
+        CHART_DIR: flask-chart
+        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         
