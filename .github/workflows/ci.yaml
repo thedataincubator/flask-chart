@@ -15,21 +15,21 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: "Helm publish"
-      uses: draios/action-helm-tools@v1.0.8
+      uses: mbovo/action-helm-artifactory@v1.0.8
       with:
         action: "package"
       env:
         CHART_DIR: flask-chart
-        ARTIFACTORY_URL: https://bin.cloud.barco.com:443/artifactory/nitin-test-repo
+        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
         ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
     
     - name: "Helm publish"
-      uses: draios/action-helm-tools@v1.0.8
+      uses: mbovo/action-helm-artifactory@v1.0.8
       with:
-        action: "publish"
+        action: "push"
       env:
         CHART_DIR: flask-chart
-        ARTIFACTORY_URL: https://bin.cloud.barco.com:443/artifactory/nitin-test-repo
+        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
         ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
