@@ -1,1 +1,25 @@
 
+name: CI with git hub actions
+
+on:
+  push:
+    branches: [ master ]
+  # pull_requests:
+  #   tags:
+  #   - '/release/'
+
+jobs:
+  helm-suite:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: "Helm checks"
+      uses: mbovo/action-helm-tools@v1.0.0
+      with:
+        action: "check"
+      env:
+        CHART_DIR: flask-chart
+        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
