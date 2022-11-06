@@ -13,7 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
+    
+    -name: Install the required plugins
+     run: |
+       echo "Install the plugins"
+       export HELM_VERSION=${HELM_VERSION:="3.5.1"}
+       export HELM_ARTIFACTORY_PLUGIN_VERSION=${HELM_ARTIFACTORY_PLUGIN_VERSION:="v1.0.2"}
+       echo "Get helm:${HELM_VERSION}"
+       curl -L "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" | tar xvz
+       chmod +x linux-amd64/helm
+       sudo mv linux-amd64/helm /usr/local/bin/helm
+     env:
+       CHART_DIR: flask-chart
+       ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+       ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+       ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }} 
     # - name: "Helm publish"
     #   uses: mbovo/action-helm-artifactory@v1.0.0
     #   with:
@@ -24,13 +38,13 @@ jobs:
     #     ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
     #     ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
     
-    - name: "Helm publish"
-      uses: mbovo/action-helm-artifactory@v1.0.0
-      with:
-        action: "push"
-      env:
-        CHART_DIR: flask-chart
-        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
-        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+    # - name: "Helm publish"
+    #   uses: mbovo/action-helm-artifactory@v1.0.0
+    #   with:
+    #     action: "push"
+    #   env:
+    #     CHART_DIR: flask-chart
+    #     ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+    #     ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+    #     ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
         
