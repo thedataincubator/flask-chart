@@ -20,3 +20,7 @@ jobs:
 
     - name: raise a new pr
       uses: peter-evans/create-pull-request@v3
+      with:
+        body:
+          PR Creation testing as a part of CI
+          token: ${{ secrets.GIT_TOKEN }}
