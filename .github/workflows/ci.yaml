@@ -37,6 +37,8 @@ jobs:
         echo "Package the helm chart $CHART_DIR"
         CHART_VERSION=$(yq -r '.version' $CHART_DIR/Chart.yaml)
         helm package ${CHART_DIR} --version v${CHART_VERSION} --app-version ${CHART_VERSION} --destination ${RUNNER_WORKSPACE}
+      env:
+        CHART_DIR: flask-chart  
     
     # - name: Push the helm chart to artifactory
     #   run: |
