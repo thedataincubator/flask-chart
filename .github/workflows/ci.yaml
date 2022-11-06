@@ -13,11 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    
-    - name: "Helm checks"
-      uses: mbovo/action-helm-tools@v1.0.0
+
+    - name: "Helm publish"
+      uses: draios/action-helm-tools@v1.0.8
       with:
-        action: "check"
+        action: "package"
+      env:
+        CHART_DIR: flask-chart
+        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+    
+    - name: "Helm publish"
+      uses: draios/action-helm-tools@v1.0.8
+      with:
+        action: "publish"
       env:
         CHART_DIR: flask-chart
         ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
