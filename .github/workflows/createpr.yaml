@@ -1,0 +1,32 @@
+name: Create Pr on push to any branch if the git tag contains release
+
+on:
+  push:
+    tags:
+    - '*-release-v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  autopr:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout the code
+      uses: actions/checkout@v2
+    
+    - name: extract the git commit
+      uses: rlespinasse/git-commit-data-action@v1
+    
+    - name: Author information
+      run: echo "Changes authored by ${{ env.GIT_COMMIT_AUTHOR_NAME }}"
+
+    - name: raise a new pr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        branch: "auto-pr-branch"
+        base: main
+        title: "This PR is created automatically"
+        committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+        author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+        body:
+          PR Creation testing as a part of CI
+        token: ${{ secrets.GITHUB_TOKEN }}
+        delete-branch: true

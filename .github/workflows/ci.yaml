@@ -1,0 +1,54 @@
+
+name: CI with git hub actions
+
+on:
+  push:
+    branches: [ master ]
+  # pull_requests:
+  #   tags:
+  #   - '/release/'
+
+jobs:
+  helm-suite:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install the required plugins
+      run: |
+        echo "Install the plugins"
+        export HELM_VERSION=${HELM_VERSION:="3.5.4"}
+        export HELM_ARTIFACTORY_PLUGIN_VERSION=${HELM_ARTIFACTORY_PLUGIN_VERSION:="v1.0.2"}
+        helm plugin install https://github.com/belitre/helm-push-artifactory-plugin --version ${HELM_ARTIFACTORY_PLUGIN_VERSION}
+        pip3 install yq
+        echo "Get helm:${HELM_VERSION}"
+        curl -L "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" | tar xvz
+        chmod +x linux-amd64/helm
+        sudo mv linux-amd64/helm /usr/local/bin/helm
+
+    - name: Validate the helm chart
+      run: |
+        echo "Validate the helm chart at $CHART_DIR"
+        helm lint $CHART_DIR
+      env:
+        CHART_DIR: flask-chart
+
+    - name: Package the Helm Chart
+      run: |
+        echo "Package the helm chart $CHART_DIR"
+        CHART_VERSION=$(yq -r '.version' $CHART_DIR/Chart.yaml)
+        helm package ${CHART_DIR} --version v${CHART_VERSION} --app-version ${CHART_VERSION} --destination ${RUNNER_WORKSPACE}
+      env:
+        CHART_DIR: flask-chart  
+    
+    - name: Push the helm chart to artifactory
+      run: |
+        echo "Push helm chart $CHART_DIR"
+        CHART_VERSION=$(yq -r '.version' $CHART_DIR/Chart.yaml)
+        helm push-artifactory ${CHART_DIR} ${ARTIFACTORY_URL} --username ${ARTIFACTORY_USERNAME} --password ${ARTIFACTORY_PASSWORD} --version "${CHART_VERSION}"
+      env:
+        CHART_DIR: flask-chart
+        ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+        ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+        ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        

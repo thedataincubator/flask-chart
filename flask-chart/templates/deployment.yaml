@@ -1,13 +1,17 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "flask-chart.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     app: {{ template "flask-chart.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  selector:
+    matchLabels:
+      app: {{ template "flask-chart.name" . }}
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
